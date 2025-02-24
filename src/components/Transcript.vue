@@ -1,19 +1,40 @@
 <template>
-  <div class="max-w-[1200px] mx-auto p-5 bg-white shadow-md">
-    <div class="flex justify-between items-center mb-8">
+  <div class="max-w-[1200px] mx-auto p-10 bg-white shadow-md">
+    <div class="flex justify-between items-center mb-12">
+      <!-- School Logo -->
       <div class="header-logo">
         <img
           width="120"
-          src="https://workingna-files.s3.ap-southeast-1.amazonaws.com/1645761959094-sala_cover-01.png"
+          src="https://www.ptec.edu.kh/wp-content/uploads/2020/06/cropped-Site-Icon.png"
           alt="College Logo"
           class="object-contain"
         />
+        <h4 class="font-semibold">&#8470; . . . . . . . . . PTEC</h4>
       </div>
+
+      <!-- Related School Name -->
       <div class="text-center">
         <h1 class="text-xl font-bold">KINGDOM OF CAMBODIA</h1>
         <h2 class="text-lg font-semibold">NATION RELIGION KING</h2>
-        <h3 class="text-base">PHNOM PENH TEACHER EDUCATION COLLEGE</h3>
+        <div class="flex justify-center">
+          <img
+            src="https://clipart-library.com/2023/xcg6kxd9i.png"
+            alt="Decorative Divider"
+            class="w-24"
+          />
+        </div>
+        <h3 class="text-lg text-blue-400 font-khmer">
+          វិទ្យាស្ថាន​គរុកោសល្យ​រាជធានី​ភ្នំពេញ
+        </h3>
+        <h3 class="text-base font-semibold">
+          PHNOM PENH TEACHER EDUCATION COLLEGE
+        </h3>
+
+        <!-- Letter Title -->
+        <h2 class="text-2xl font-semibold my-12 text-blue-400 font-arsenal">Official Transcript</h2>
       </div>
+
+      <!-- Student Photo -->
       <div class="student-photo">
         <div class="w-[120px] h-[150px] border border-gray-300">
           <!-- <img
@@ -83,10 +104,13 @@
               </thead>
               <tbody>
                 <tr
+                  class="font-semibold"
                   v-for="course in getCoursesForSemester(year, 1)"
                   :key="course.code"
                 >
-                  <td class="border border-gray-300 p-2">{{ course.code }}</td>
+                  <td class="border border-gray-300 p-2 text-blue-400">
+                    {{ course.code }}
+                  </td>
                   <td class="border border-gray-300 p-2">{{ course.title }}</td>
                   <td class="border border-gray-300 p-2">
                     {{ course.credits }}
@@ -117,10 +141,13 @@
               </thead>
               <tbody>
                 <tr
+                  class="font-semibold"
                   v-for="course in getCoursesForSemester(year, 2)"
                   :key="course.code"
                 >
-                  <td class="border border-gray-300 p-2">{{ course.code }}</td>
+                  <td class="border border-gray-300 p-2 text-blue-400">
+                    {{ course.code }}
+                  </td>
                   <td class="border border-gray-300 p-2">{{ course.title }}</td>
                   <td class="border border-gray-300 p-2">
                     {{ course.credits }}
@@ -147,6 +174,13 @@
 
     <!-- Grade Scale overview component -->
     <GradeScale />
+
+    <section class="mt-12 mb-8">
+      <hr class="border-blue-400 border-[1px]" />
+      <p class="text-center text-blue-400">
+        #Address: 271 Street, Sangkat Ruusey Keo, Phnom Penh Cambodia.
+      </p>
+    </section>
   </div>
 </template>
 
