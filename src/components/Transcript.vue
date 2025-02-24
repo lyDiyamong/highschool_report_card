@@ -15,7 +15,13 @@
         <h3 class="text-base">PHNOM PENH TEACHER EDUCATION COLLEGE</h3>
       </div>
       <div class="student-photo">
-        <div class="w-[120px] h-[150px] border border-gray-300"></div>
+        <div class="w-[120px] h-[150px] border border-gray-300">
+          <!-- <img
+            src="https://www.shutterstock.com/image-photo/young-hispanic-man-wearing-blue-600nw-2214648345.jpg"
+            alt="profile"
+            class="w-full h-full object-cover"
+          /> -->
+        </div>
       </div>
     </div>
 
@@ -132,45 +138,21 @@
       </div>
     </div>
 
-    <div class="mt-8">
+    <div>
       <div class="flex justify-between mb-5 max-w-[50%]">
         <h4 class="text-lg font-bold">Cumulative GPA: {{ cumulativeGPA }}</h4>
         <h4 class="text-lg font-bold">Total Credits: {{ totalCredits }}</h4>
       </div>
-      <div class="text-sm">
-        <table class="w-full border-collapse">
-          <thead>
-            <tr>
-              <th class="border border-gray-300 p-2 bg-gray-50 text-left">
-                Mark Obtained
-              </th>
-              <th class="border border-gray-300 p-2 bg-gray-50 text-left">
-                Grade
-              </th>
-              <th class="border border-gray-300 p-2 bg-gray-50 text-left">
-                Grade Point Average
-              </th>
-              <th class="border border-gray-300 p-2 bg-gray-50 text-left">
-                Meaning
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="grade in gradeScale" :key="grade.mark">
-              <td class="border border-gray-300 p-2">{{ grade.mark }}</td>
-              <td class="border border-gray-300 p-2">{{ grade.grade }}</td>
-              <td class="border border-gray-300 p-2">{{ grade.gpa }}</td>
-              <td class="border border-gray-300 p-2">{{ grade.meaning }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
+
+    <!-- Grade Scale overview component -->
+    <GradeScale />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import GradeScale from "./GradeScale.vue";
 
 interface Course {
   code: string;
@@ -194,17 +176,6 @@ const studentInfo = ref({
   degree: "Bachelor of Education",
   major: "Chemistry",
 });
-
-const gradeScale = ref([
-  { mark: "85%-100%", grade: "A", gpa: "4.00", meaning: "Excellent" },
-  { mark: "80%-84%", grade: "B+", gpa: "3.50", meaning: "Very Good" },
-  { mark: "70%-79%", grade: "B", gpa: "3.00", meaning: "Good" },
-  { mark: "65%-69%", grade: "C+", gpa: "2.50", meaning: "Fairly Good" },
-  { mark: "50%-64%", grade: "C", gpa: "2.00", meaning: "Fair" },
-  { mark: "45%-49%", grade: "D", gpa: "1.50", meaning: "Poor" },
-  { mark: "40%-44%", grade: "E", gpa: "1.00", meaning: "Very Poor" },
-  { mark: "<40%", grade: "F", gpa: "0.00", meaning: "Failure" },
-]);
 
 const academicData = ref<Record<number, YearData>>({
   1: {
@@ -529,103 +500,3 @@ const getYearCredits = (year: number): number => {
 const cumulativeGPA = ref("3.84");
 const totalCredits = ref(135);
 </script>
-
-<style scoped>
-/* .transcript-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.transcript-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.header-text {
-  text-align: center;
-}
-
-.photo-box {
-  width: 120px;
-  height: 150px;
-  border: 1px solid #ccc;
-}
-
-.student-info {
-  margin-bottom: 30px;
-}
-
-.info-row {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.info-item {
-  flex: 1;
-}
-
-.label {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.academic-records {
-  margin-bottom: 30px;
-}
-
-.academic-year {
-  margin-bottom: 30px;
-}
-
-.semesters {
-  display: flex;
-  gap: 20px;
-}
-
-.semester {
-  flex: 1;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 15px;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #f5f5f5;
-}
-
-.semester-summary {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #f5f5f5;
-}
-
-.transcript-footer {
-  margin-top: 30px;
-}
-
-.total-summary {
-  text-align: right;
-  margin-bottom: 20px;
-}
-
-.grade-scale table {
-  font-size: 0.9em;
-} */
-</style>
