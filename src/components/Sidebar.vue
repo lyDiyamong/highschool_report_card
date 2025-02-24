@@ -26,6 +26,13 @@
                 </template>
                 Reports
             </a-menu-item>
+
+            <a-menu-item key="transcript" @click="navigateTo('transcript')">
+                <template #icon>
+                    <FolderOutlined />
+                </template>
+                Transcript
+            </a-menu-item>
         </a-menu>
     </a-layout-sider>
 </template>
