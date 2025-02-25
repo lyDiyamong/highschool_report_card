@@ -2,7 +2,7 @@
   <div class="max-w-[1200px] mx-auto p-10 bg-white shadow-md">
     <div class="flex justify-between items-center mb-12">
       <!-- School Logo -->
-      <div class="header-logo">
+      <div>
         <img
           width="120"
           src="https://www.ptec.edu.kh/wp-content/uploads/2020/06/cropped-Site-Icon.png"
@@ -31,7 +31,9 @@
         </h3>
 
         <!-- Letter Title -->
-        <h2 class="text-2xl font-semibold my-12 text-blue-400 font-arsenal">Official Transcript</h2>
+        <h2 class="text-2xl font-semibold my-12 text-blue-400 font-arsenal">
+          Official Transcript
+        </h2>
       </div>
 
       <!-- Student Photo -->
