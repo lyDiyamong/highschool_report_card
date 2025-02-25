@@ -2,6 +2,7 @@
   <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
     <div class="flex justify-between items-start mb-6">
       <div>
+        <h1 class="text-xl">{{ anotherStudentData?.studentLastName }}</h1>
         <h1 class="text-3xl font-bold text-red-800">REPORT CARD</h1>
         <p class="text-gray-600">MONTH: {{ currentMonth }}</p>
       </div>
@@ -88,6 +89,7 @@
 </template>
 
 <script setup lang="ts">
+import type { StudentReportData } from '../stores/report-cards/reportClickhouse';
 import { ref } from 'vue'
 
 interface Score {
@@ -119,6 +121,7 @@ interface StudentData {
 
 const props = defineProps<{
   studentData: StudentData;
+  anotherStudentData: any
 }>()
 
 const currentMonth = ref(new Date().toLocaleString('default', { month: 'long' }))

@@ -4,11 +4,11 @@ import axios from 'axios'
 
 // Create an axios instance with ClickHouse-specific configuration
 const clickhouseApi = axios.create({
-  baseURL: import.meta.env.CLICKHOUSE_URL, // Default ClickHouse HTTP interface port
+  baseURL: import.meta.env.VITE_CLICKHOUSE_URL, // Default ClickHouse HTTP interface port
   timeout: 30000, // 30 seconds timeout
   headers: {
-    'X-ClickHouse-User': `${import.meta.env.CLICKHOUSE_USER}`,    // Your ClickHouse username
-    'X-ClickHouse-Key': `${import.meta.env.CLICKHOUSE_PASSWORD}`,           // Your ClickHouse password (empty if none)
+    'X-ClickHouse-User': `${import.meta.env.VITE_CLICKHOUSE_USER}`,    // Your ClickHouse username
+    'X-ClickHouse-Key': `${import.meta.env.VITE_CLICKHOUSE_PASSWORD}`,           // Your ClickHouse password (empty if none)
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
