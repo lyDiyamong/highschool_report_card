@@ -24,7 +24,7 @@
         <h1 class="text-xl font-bold">KINGDOM OF CAMBODIA</h1>
         <h2 class="text-lg font-semibold">NATION RELIGION KING</h2>
         <h3 class="text-lg text-blue-400 font-khmer">
-          វិទ្យាស្ថាន​គរុកោសល្យ​រាជធានី​ភ្នំពេញ
+          ជាតិ សាសនា ព្រះមហាក្សត្រ
         </h3>
         <div class="flex justify-center">
           <img
