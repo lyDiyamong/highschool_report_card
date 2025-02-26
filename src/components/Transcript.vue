@@ -3,27 +3,29 @@
     <div class="text-xl font-semibold">Loading...</div>
   </div>
 
-  <!-- Do it here -->
-
-  <!--  End -->
-
   <div v-else class="max-w-[1200px] mx-auto p-10 bg-white shadow-md">
     <div class="flex justify-between items-center mb-12">
       <!-- School Logo -->
       <div>
         <img
           width="120"
-          src="https://www.ptec.edu.kh/wp-content/uploads/2020/06/cropped-Site-Icon.png"
-          alt="College Logo"
-          class="object-contain"
+          :src="
+            schoolInfo?.logo ||
+            'https://static.thenounproject.com/png/4595376-200.png'
+          "
+          alt="School Logo"
+          class="school-logo"
         />
-        <h4 class="font-semibold">&#8470; . . . . . . . . . PTEC</h4>
+        <h4 class="font-semibold mt-2">&#8470; . . . . . . . . . PTEC</h4>
       </div>
 
       <!-- Related School Name -->
       <div class="text-center">
         <h1 class="text-xl font-bold">KINGDOM OF CAMBODIA</h1>
         <h2 class="text-lg font-semibold">NATION RELIGION KING</h2>
+        <h3 class="text-lg text-blue-400 font-khmer">
+          វិទ្យាស្ថាន​គរុកោសល្យ​រាជធានី​ភ្នំពេញ
+        </h3>
         <div class="flex justify-center">
           <img
             src="https://clipart-library.com/2023/xcg6kxd9i.png"
@@ -31,11 +33,9 @@
             class="w-24"
           />
         </div>
-        <h3 class="text-lg text-blue-400 font-khmer">
-          វិទ្យាស្ថាន​គរុកោសល្យ​រាជធានី​ភ្នំពេញ
-        </h3>
-        <h3 class="text-base font-semibold">
-          PHNOM PENH TEACHER EDUCATION COLLEGE
+
+        <h3 class="text-2xl font-semibold">
+          {{ schoolInfo?.name || "N/A" }}
         </h3>
 
         <!-- Letter Title -->
@@ -616,7 +616,10 @@
     <section class="mt-12 mb-8">
       <hr class="border-blue-400 border-[1px]" />
       <p class="text-center text-blue-400">
-        #Address: 271 Street, Sangkat Ruusey Keo, Phnom Penh Cambodia.
+        {{
+          schoolInfo?.address ||
+          "#Address: 271 Street, Sangkat Ruusey Keo, Phnom Penh Cambodia."
+        }}
       </p>
     </section>
   </div>
@@ -642,6 +645,7 @@ const {
   yearThree,
   yearFour,
   loading,
+  schoolInfo,
 } = storeToRefs<{
   studentData: StudentData | null;
   structureData: StructureData | null;
@@ -650,6 +654,7 @@ const {
   yearThree: YearlyData | null;
   yearFour: YearlyData | null;
   loading: boolean;
+  schoolInfo: any;
 }>(transcriptStore);
 const { fetchTranscript } = transcriptStore;
 
@@ -674,7 +679,8 @@ const calculateCumulativeStats = computed(() => {
   ].filter((year) => year !== null);
 
   const semesters = computed(
-    () => structureData.value?.structureRecordName || ["Semester 1", "Semester 2"]
+    () =>
+      structureData.value?.structureRecordName || ["Semester 1", "Semester 2"]
   );
 
   if (years.length === 0) {
@@ -715,3 +721,15 @@ const getSemesterSubjects = (subjectDetails: any[], semesterName: string) => {
   );
 };
 </script>
+
+<style scoped>
+.school-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.school-logo {
+  max-width: 200px;
+  height: auto;
+}
+</style>

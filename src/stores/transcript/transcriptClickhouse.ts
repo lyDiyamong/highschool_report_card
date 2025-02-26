@@ -35,6 +35,13 @@ export interface YearlyData {
   createdAt: string;
 }
 
+// Add interface for school info
+export interface SchoolInfo {
+  name: string;
+  logo: string;
+  address: string;
+}
+
 const STUDENT_TRANSCRIPT_TABLE = "clickhouse.student_transcript_staging";
 
 interface RequiredTranscriptParam {
@@ -52,27 +59,38 @@ export const useTranscriptStore = defineStore("transcript", () => {
   const yearFour = ref<YearlyData | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  // Add school info ref
+  const schoolInfo = ref<SchoolInfo | null>(null);
 
   async function fetchTranscript(params: RequiredTranscriptParam) {
     loading.value = true;
     error.value = null;
 
     try {
+      // Fetch school info
+      const schoolResponse = await clickhouseApi.get("/", {
+        params: {
+          query:
+            "SELECT name, logo, address FROM clickhouse.school WHERE schoolId= '6038e409-72a6-47bf-a002-4e1e1c5b2441' FORMAT JSON",
+        },
+      });
+
+      if (schoolResponse.data && schoolResponse.data[0]) {
+        schoolInfo.value = {
+          name: schoolResponse.data[0].name,
+          logo: schoolResponse.data[0].logo,
+          address: schoolResponse.data[0].address,
+        };
+      }
+
       const response = await clickhouseApi.get("/", {
         params: {
-          query: `
-            SELECT 
-              *
-            FROM ${STUDENT_TRANSCRIPT_TABLE}
-            WHERE 
-              idCard = '${params.idCard}'
-              AND groupStructureId = '${params.groupStructureId}'
-            LIMIT 10
-          `,
+          query: `SELECT * FROM ${STUDENT_TRANSCRIPT_TABLE} WHERE idCard = '${params.idCard}' AND groupStructureId = '${params.groupStructureId}' ORDER BY structureRecordName ASC FORMAT JSON`,
         },
       });
 
       console.log("Transcript API Response:", response.data);
+      console.log("School Info:", schoolInfo.value);
 
       if (response.data && response.data.length > 0) {
         // Set student and structure data from first record
@@ -173,6 +191,7 @@ export const useTranscriptStore = defineStore("transcript", () => {
     yearTwo,
     yearThree,
     yearFour,
+    schoolInfo,
     loading,
     error,
     fetchTranscript,
