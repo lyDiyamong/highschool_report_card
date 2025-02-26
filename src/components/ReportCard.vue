@@ -2,7 +2,6 @@
   <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
     <div class="flex justify-between items-start mb-6">
       <div>
-        <h1 class="text-xl">{{ anotherStudentData?.studentLastName }}</h1>
         <h1 class="text-3xl font-bold text-red-800">REPORT CARD</h1>
         <p class="text-gray-600">MONTH: {{ currentMonth }}</p>
       </div>
@@ -15,9 +14,9 @@
     </div>
 
     <div class="mb-6">
-      <p><span class="font-semibold">Student Name:</span> {{ studentData.name }}</p>
-      <p><span class="font-semibold">Student ID:</span> {{ studentData.id }}</p>
-      <p><span class="font-semibold">EYC Level:</span> {{ studentData.level }}</p>
+      <p><span class="font-semibold">Student Name:</span> {{ `${studentReportData?.studentFirstName} ${studentReportData.studentLastName}` }}</p>
+      <p><span class="font-semibold">Student ID:</span> {{ studentReportData?.idCard }}</p>
+      <p><span class="font-semibold">Class</span> {{ studentReportData?.structureRecordName }}</p>
       <p><span class="font-semibold">Total Student:</span> {{ studentData.totalStudents }} students</p>
       <p><span class="font-semibold">Total Female:</span> {{ studentData.totalFemale }} students</p>
     </div>
@@ -33,11 +32,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="score in studentData.scores" :key="score.subject">
-          <td class="border p-2">{{ score.subject }}</td>
-          <td class="border p-2 text-center">{{ score.score }}/{{ score.maxScore }}</td>
-          <td class="border p-2 text-center">{{ score.grade }}</td>
-          <td class="border p-2 text-center" rowspan="4" v-if="score.subject === 'Writing Test'">1</td>
+        <tr v-for="subject in studentReportData?.subjectDetails" :key="subject.subjectEvaluationId">
+          <td class="border p-2">{{ subject.subjectName }}</td>
+          <td class="border p-2 text-center">{{ subject.score }}/{{ subject.maxScore }}</td>
+          <td class="border p-2 text-center">{{ subject.grade }}</td>
+          <!-- <td class="border p-2 text-center" rowspan="4" v-if="subject.subject === 'Writing Test'">1</td> -->
         </tr>
       </tbody>
     </table>
@@ -89,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import type { StudentReportData } from '../stores/report-cards/reportClickhouse';
+import type { StudentReportDataType } from '@/types/studentReport.type';
 import { ref } from 'vue'
 
 interface Score {
@@ -119,9 +118,11 @@ interface StudentData {
   attendance: Attendance;
 }
 
+
+
 const props = defineProps<{
   studentData: StudentData;
-  anotherStudentData: any
+  studentReportData: StudentReportDataType
 }>()
 
 const currentMonth = ref(new Date().toLocaleString('default', { month: 'long' }))

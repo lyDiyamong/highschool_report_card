@@ -1,19 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import clickhouseApi from "../../api/clickhouseAxios";
+import type { StudentReportDataType } from "@/types/studentReport.type";
 
-export interface StudentReportData {
-  studentId: string;
-  structureRecordId: string;
-  campusId: string;
-  studentFirstName: string;
-  studentLastName: string;
-  studentFirstNameNative: string;
-  studentLastNameNative: string;
-  idCard: string;
-  dob: string;
-  gender: string;
-}
 
 const STUDENT_SUBJECT_SCORE_TABLE = "clickhouse.student_transcript_staging";
 
@@ -23,9 +12,9 @@ interface RequiredIdParam {
 }
 
 export const useReportCardStore = defineStore("clickhouse", () => {
-  const data = ref<StudentReportData | null>(null); // ✅ Ensure reactivity
-  const loading = ref(false);
-  const error = ref<string | null>(null);
+    const data = ref<StudentReportDataType | null>(null); // ✅ Ensure reactivity
+    const loading = ref(false);
+    const error = ref<string | null>(null);
 
   async function studentReport(requireId: RequiredIdParam) {
     loading.value = true;

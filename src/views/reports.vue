@@ -1,9 +1,10 @@
 <template>
     <h2 v-if="loading">Loading...</h2>
-    <h2 v-else-if="data && data.studentLastName">{{ data?.studentLastName }}</h2>
-    <h2 v-else>No data available</h2>
+    <!-- <h2 v-else-if="data && data.studentLastName">{{ data?.studentLastName }}</h2> -->
+    
 
-    <report-card :studentData="studentData" :anotherStudentData="data" />
+    <report-card v-else-if="data" :studentData="studentData" :studentReportData="data" />
+    <h2 v-else>No data available</h2>
 </template>
 
 <script setup lang="ts">
@@ -13,16 +14,16 @@ import ReportCard from "../components/ReportCard.vue";
 import { useReportCardStore } from "../stores/report-cards/reportClickhouse";
 
 const reportCard = useReportCardStore();
-// ✅ Keep reactivity
+// Keep reactivity
 const { data, loading, error } = storeToRefs(reportCard); 
-// ✅ This can be destructured normally (it's a function)
+// This can be destructured normally (it's a function)
 const { studentReport } = reportCard; 
 
 async function fetchData() {
     try {
         await studentReport({
-            studentId: "0480eb62-4710-4343-851e-19718f2f3e93",
-            structureRecordId: "137c3bf7-34f4-4998-a988-2ed26a4734b2",
+            studentId: "a13f5e7a-580a-4ef0-b2be-54e2061e7e53",
+            structureRecordId: "20fa080a-2f61-4f82-9cc2-326bdc50ca48",
         });
     } catch (err) {
         console.error("Query failed:", err);
