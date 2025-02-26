@@ -22,9 +22,16 @@
                 <span>{{ record.idCard }}</span>
             </template>
             <template v-else-if="column.key === 'month'">
-                
-                <a-select v-model:value="record.selectedMonth" class="w-full" @change="handleNavigateMonth(record.selectedMonth)">
-                    <a-select-option v-for="month in uniqueMonths" :key="month" :value="month">
+                <a-select
+                    v-model:value="record.selectedMonth"
+                    class="w-full"
+                    @change="handleNavigateMonth(record.selectedMonth)"
+                >
+                    <a-select-option
+                        v-for="month in uniqueMonths"
+                        :key="month"
+                        :value="month"
+                    >
                         {{ month }}
                     </a-select-option>
                 </a-select>
@@ -34,15 +41,17 @@
 </template>
 
 <script lang="ts" setup>
-    import { SmileOutlined, UserOutlined } from "@ant-design/icons-vue";
-    import { useReportCardStore } from "@/stores/report-cards/reportClickhouse";
-    import { storeToRefs } from "pinia";
-    import { computed, onMounted } from "vue";
+    import { SmileOutlined } from "@ant-design/icons-vue";
+    import { computed, onMounted, toRefs } from "vue";
     import { useRouter } from "vue-router";
+import type { StructureDataType } from "@/types/studentReport.type";
 
-    const reportCardStore = useReportCardStore();
-    const { structureRecordData, loading } = storeToRefs(reportCardStore);
-    const { fetchStructureRecord } = reportCardStore;
+    const props = defineProps<{
+        structureRecordData: StructureDataType;
+        loading : boolean
+    }>();
+    const { structureRecordData, loading } = toRefs(props);
+
 
     const columns = [
         { title: "Name", dataIndex: "name", key: "name" },
@@ -72,15 +81,12 @@
         }
         return [...monthsSet];
     });
-    const router = useRouter()
+    const router = useRouter();
 
     const handleNavigateMonth = (monthName: string) => {
-        router.push(`/reports/${monthName}`)
-    }
+        router.push(`/reports/${monthName}`);
+    };
 
-    onMounted(() => {
-        fetchStructureRecord("20fa080a-2f61-4f82-9cc2-326bdc50ca48");
-    });
 </script>
 
 <style scoped>

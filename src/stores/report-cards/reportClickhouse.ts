@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import clickhouseApi from "../../api/clickhouseAxios";
-import type { StudentReportDataType } from "@/types/studentReport.type";
+import type { StructureDataType, StudentReportDataType } from "@/types/studentReport.type";
 
 const STUDENT_SUBJECT_SCORE_TABLE = "clickhouse.student_transcript_staging";
 
@@ -9,11 +9,7 @@ interface StudentDataIdParam {
     studentId: string;
     structureRecordId: string;
 }
-interface StructureDataType {
-    structureRecordId: string
-    structureRecordName : string
-    studentDetails : StudentReportDataType[]
-}
+
 
 export const useReportCardStore = defineStore("clickhouse", () => {
     const studentReportData = ref<StudentReportDataType | null>(null); // ✅ Ensure reactivity

@@ -37,3 +37,9 @@ export interface StudentReportDataType {
     subjectDetails: SubjectDetail[];
   
   }
+
+export interface StructureDataType {
+    structureRecordId: string
+    structureRecordName : string
+    studentDetails : StudentReportDataType[]
+}
