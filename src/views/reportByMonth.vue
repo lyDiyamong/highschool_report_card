@@ -1,7 +1,5 @@
 <template>
-    <h2 v-if="loading">Loading...</h2>
-    <!-- <h2 v-else-if="data && data.studentLastName">{{ data?.studentLastName }}</h2> -->
-
+    <h2 v-if="loadingState.studentReport">Loading...</h2>
     <report-card
         v-else-if="studentReportData"
         :studentData="studentData"
@@ -18,7 +16,7 @@
 
     const reportCard = useReportCardStore();
     // Keep reactivity
-    const { studentReportData, loading, error } = storeToRefs(reportCard);
+    const { studentReportData, loadingState } = storeToRefs(reportCard);
     // This can be destructured normally (it's a function)
     const { fetchStudentReport } = reportCard;
 

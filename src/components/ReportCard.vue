@@ -12,14 +12,6 @@
                     class="rounded"
                     v-if="studentData.photo"
                 />
-                <a-upload-dragger
-                    v-else
-                    v-model:fileList="fileList"
-                    name="file"
-                    action="/upload"
-                >
-                    <p class="text-sm">Student Photo</p>
-                </a-upload-dragger>
             </div>
         </div>
 
@@ -134,9 +126,17 @@
 </template>
 
 <script setup lang="ts">
+    import { useReportCardStore } from "@/stores/report-cards/reportClickhouse";
     import type { StudentReportDataType } from "@/types/studentReport.type";
-    import { computed, ref, toRefs, watchEffect } from "vue";
+    import { storeToRefs } from "pinia";
+    import { computed, onMounted, ref, toRefs, watchEffect } from "vue";
     import { useRoute } from "vue-router";
+
+    const reportCardStore = useReportCardStore();
+
+    const {fetchStructureRecord} = reportCardStore
+
+    const { structureRecordData } = storeToRefs(reportCardStore);
 
     const props = defineProps<{
         studentData: StudentData;
@@ -162,9 +162,13 @@
         );
     });
 
+    // onMounted(() => {
+    //     fetchStructureRecord("20fa080a-2f61-4f82-9cc2-326bdc50ca48");
+    // });
 
     watchEffect(() => {
-      console.log(subjectByMonth.value);
+        console.log(subjectByMonth.value);
+        console.log(structureRecordData.value);
     });
 
     interface Score {
@@ -197,7 +201,6 @@
     const currentMonth = ref(
         new Date().toLocaleString("default", { month: "long" })
     );
-    const fileList = ref([]);
 </script>
 
 <style scoped>

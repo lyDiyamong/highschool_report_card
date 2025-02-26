@@ -10,81 +10,86 @@ interface StudentDataIdParam {
     structureRecordId: string;
 }
 
-
 export const useReportCardStore = defineStore("clickhouse", () => {
-    const studentReportData = ref<StudentReportDataType | null>(null); // ✅ Ensure reactivity
-    const structureRecordData = ref<StructureDataType | null>(null)
-    const loading = ref(false);
-    const error = ref<string | null>(null);
+    const studentReportData = ref<StudentReportDataType | null>(null);
+    const structureRecordData = ref<StructureDataType | null>(null);
 
-    async function fetchStudentReport(requireId: StudentDataIdParam) {
-        loading.value = true;
-        error.value = null;
+    const loadingState = ref<{ studentReport: boolean; structureRecord: boolean }>({
+        studentReport: false,
+        structureRecord: false,
+    });
 
-    try {
-      const response = await clickhouseApi.get("/", {
-        params: {
-          query: `SELECT * FROM ${STUDENT_SUBJECT_SCORE_TABLE} 
-                        WHERE studentId = '${requireId.studentId}' 
-                          AND structureRecordId = '${requireId.structureRecordId}'
-                        LIMIT 1`,
-        },
-      });
+    const errorState = ref<{ studentReport: string | null; structureRecord: string | null }>({
+        studentReport: null,
+        structureRecord: null,
+    });
 
-      console.log("API Response:", response.data);
+    function setState(newState: Partial<{
+        studentReportData: StudentReportDataType | null;
+        structureRecordData: StructureDataType | null;
+        loadingState: Partial<typeof loadingState.value>;
+        errorState: Partial<typeof errorState.value>;
+    }>) {
+        if (newState.studentReportData !== undefined) studentReportData.value = newState.studentReportData;
+        if (newState.structureRecordData !== undefined) structureRecordData.value = newState.structureRecordData;
+        if (newState.loadingState !== undefined) loadingState.value = { ...loadingState.value, ...newState.loadingState };
+        if (newState.errorState !== undefined) errorState.value = { ...errorState.value, ...newState.errorState };
+    }
 
-            if (response.data && response.data.length > 0) {
-                studentReportData.value = response.data[0]; // ✅ Assign first row
-            } else {
-                studentReportData.value = null; // ✅ Reset if no data found
-            }
+    async function executeQuery(query: string, type: "studentReport" | "structureRecord") {
+        setState({ loadingState: { [type]: true }, errorState: { [type]: null } });
+
+        try {
+            const response = await clickhouseApi.get("/", { params: { query } });
+
+            console.log("API Response:", response.data);
+            return response.data;
         } catch (err: any) {
-            error.value =
-                err.message || "An error occurred while executing the query";
+            setState({ errorState: { [type]: err.message || "An error occurred while executing the query" } });
             console.error("Query error:", err);
+            return null;
         } finally {
-            loading.value = false;
+            setState({ loadingState: { [type]: false } });
         }
     }
 
-    async function fetchStructureRecord(structureRecordId: string) {
-        loading.value = true;
-        error.value = null;
+    async function fetchStudentReport(requireId: StudentDataIdParam) {
+        const query = `SELECT * FROM ${STUDENT_SUBJECT_SCORE_TABLE} 
+                        WHERE studentId = '${requireId.studentId}' 
+                          AND structureRecordId = '${requireId.structureRecordId}'
+                        LIMIT 1`;
 
-        try {
-            const response = await clickhouseApi.get("/", {
-                params: {
-                    query: `SELECT * FROM ${STUDENT_SUBJECT_SCORE_TABLE} 
-                        WHERE "structureRecordId" = '${structureRecordId}'`,
+        const data = await executeQuery(query, "studentReport");
+
+        setState({ studentReportData: data?.length ? data[0] : null });
+    }
+
+    async function fetchStructureRecord(structureRecordId: string) {
+        const query = `SELECT * FROM ${STUDENT_SUBJECT_SCORE_TABLE} 
+                        WHERE structureRecordId = '${structureRecordId}'`;
+
+        const data = await executeQuery(query, "structureRecord");
+
+        if (data?.length) {
+            setState({
+                structureRecordData: {
+                    structureRecordId: data[0].structureRecordId,
+                    structureRecordName: data[0].structureRecordName,
+                    studentDetails: data,
                 },
             });
-
-            console.log("API Response:", response.data);
-
-            if (response.data && response.data.length > 0) {
-                structureRecordData.value = {
-                    structureRecordId : response.data[0].structureRecordId,
-                    structureRecordName : response.data[0].structureRecordName,
-                    studentDetails : response.data
-                }; // ✅ Assign first row
-            } else {
-                structureRecordData.value = null; // ✅ Reset if no data found
-            }
-        } catch (err: any) {
-            error.value =
-                err.message || "An error occurred while executing the query";
-            console.error("Query error:", err);
-        } finally {
-            loading.value = false;
+        } else {
+            setState({ structureRecordData: null });
         }
     }
 
     return {
         studentReportData,
         structureRecordData,
-        loading,
-        error,
+        loadingState,
+        errorState,
         fetchStudentReport,
-        fetchStructureRecord
+        fetchStructureRecord,
+        setState, // Exposed for global state updates if needed
     };
 });

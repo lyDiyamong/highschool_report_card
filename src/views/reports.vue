@@ -1,7 +1,7 @@
 <template>
-    <h1 v-if="loading">Loading...</h1>
+    <h1 v-if="loadingState.structureRecord">Loading...</h1>
     <!-- <h2 v-else-if="data && data.studentLastName">{{ data?.studentLastName }}</h2> -->
-    <MonthList v-if="structureRecordData" :structureRecordData="structureRecordData" :loading="loading" />
+    <MonthList v-if="structureRecordData" :structureRecordData="structureRecordData" :loading="loadingState.structureRecord" />
     <!-- <h2 v-else>No data available</h2> -->
 </template>
 
@@ -12,7 +12,7 @@
     import { storeToRefs } from "pinia";
     import { onMounted } from "vue";
     const reportCardStore = useReportCardStore();
-    const { structureRecordData, loading } = storeToRefs(reportCardStore);
+    const { structureRecordData, loadingState } = storeToRefs(reportCardStore);
     const { fetchStructureRecord } = reportCardStore;
 
 
