@@ -5,27 +5,27 @@ import DashboardLayout from "../layouts/dashboard.vue";
 
 // Define your routes
 const routes = [
-  {
-    path: "/",
-    component: DashboardLayout,
-    children: [
-      {
-        path: "",
-        name: "dashboard",
-        component: () => import("../views/dashboard.vue"),
-      },
-      {
-        path: "reports",
-        name: "reports",
-        component: () => import("../views/reports.vue"),
-      },
-      {
-        path: "transcript",
-        name: "transcript",
-        component: () => import("../views/transcript.vue"),
-      },
-    ],
-  },
+    {
+        path: "/",
+        component: DashboardLayout,
+        children: [
+            {
+                path: "",
+                name: "dashboard",
+                component: () => import("../views/dashboard.vue"),
+            },
+            {
+                path: "reports",
+                name: "reports",
+                component: () => import("../views/reports.vue"),
+            },
+            {
+                path: "reports/:month",
+                name: "reports by month",
+                component: () => import("../views/reportByMonth.vue"),
+            },
+        ],
+    },
 ];
 
 // Create the router instance
