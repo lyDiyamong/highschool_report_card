@@ -32,11 +32,11 @@
             </p>
             <p>
                 <span class="font-semibold">Total Student:</span>
-                {{ studentData.totalStudents }} students
+                {{ structureRecordData?.studentDetails.length }} students
             </p>
-            <p>
+            <p v-if="structureRecordData?.studentDetails && structureRecordData?.studentDetails.length > 0">
                 <span class="font-semibold">Total Female:</span>
-                {{ studentData.totalFemale }} students
+                {{ countFemaleStudent }} students
             </p>
         </div>
 
@@ -136,7 +136,7 @@
 
     const {fetchStructureRecord} = reportCardStore
 
-    const { structureRecordData } = storeToRefs(reportCardStore);
+    const { structureRecordData, loadingState } = storeToRefs(reportCardStore);
 
     const props = defineProps<{
         studentData: StudentData;
@@ -162,13 +162,20 @@
         );
     });
 
-    // onMounted(() => {
-    //     fetchStructureRecord("20fa080a-2f61-4f82-9cc2-326bdc50ca48");
-    // });
+    const countFemaleStudent = computed(() => {
+    return structureRecordData.value?.studentDetails
+        ? structureRecordData.value.studentDetails.filter(student => student.gender === 'female').length
+        : 0;
+});
+
+    onMounted(() => {
+        fetchStructureRecord("20fa080a-2f61-4f82-9cc2-326bdc50ca48");
+    });
 
     watchEffect(() => {
         console.log(subjectByMonth.value);
         console.log(structureRecordData.value);
+        console.log("count female", countFemaleStudent.value);
     });
 
     interface Score {
