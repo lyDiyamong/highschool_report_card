@@ -60,7 +60,7 @@
                         {{ subject.score }}/{{ subject.maxScore }}
                     </td>
                     <td class="border p-2 text-center">{{ subject.grade }}</td>
-                    <!-- <td class="border p-2 text-center" rowspan="4" v-if="subject.subject === 'Writing Test'">1</td> -->
+                    <td class="border p-2 text-center" >{{ subject.rank }}</td>
                 </tr>
             </tbody>
         </table>

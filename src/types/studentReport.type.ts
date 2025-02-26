@@ -17,6 +17,7 @@ interface SubjectDetail {
     monthEvaluationId: string | null;
     semesterName: string;
     semesterEvaluationId: string;
+    rank : number;
   }
   
 export interface StudentReportDataType {
