@@ -19,8 +19,8 @@ const { studentReport } = reportCard; // ✅ This can be destructured normally (
 async function fetchData() {
     try {
         await studentReport({
-            studentId: "69d62915-02da-4830-a4ab-d9abc1c5db81",
-            structureRecordId: "fa89399f-1958-48f1-85c2-6eca66977ead",
+            studentId: "378a96da-8fe2-4745-a99c-d92c3f1b54a8",
+            structureRecordId: "8a8a6590-f543-47cd-9f1c-783fc62b9d8d",
         });
     } catch (err) {
         console.error("Query failed:", err);
