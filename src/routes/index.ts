@@ -24,6 +24,11 @@ const routes = [
                 name: "reports by month",
                 component: () => import("../views/reportByMonth.vue"),
             },
+            {
+              path: "transcript",
+              name: "transcript",
+              component: () => import("../views/transcript.vue"),
+            },
         ],
     },
 ];
