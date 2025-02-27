@@ -71,7 +71,7 @@ export const useTranscriptStore = defineStore("transcript", () => {
       const schoolResponse = await clickhouseApi.get("/", {
         params: {
           query:
-            "SELECT name, logo, address FROM clickhouse.school WHERE schoolId= '6038e409-72a6-47bf-a002-4e1e1c5b2441' FORMAT JSON",
+            "SELECT name, logo, address FROM clickhouse.school_staging WHERE schoolId= '6038e409-72a6-47bf-a002-4e1e1c5b2441' FORMAT JSON",
         },
       });
 
