@@ -629,17 +629,12 @@
 import { onMounted, computed } from "vue";
 import { storeToRefs } from "pinia";
 import GradeScale from "./GradeScale.vue";
-import {
-  useTranscriptStore,
-  type StudentData,
-  type StructureData,
-  type YearlyData,
-} from "../stores/transcript/transcriptClickhouse";
+import { useTranscriptStore } from "../stores/transcript/transcriptClickhouse";
 
 const transcriptStore = useTranscriptStore();
+
 const {
   studentData,
-  structureData,
   yearOne,
   yearTwo,
   yearThree,
@@ -647,8 +642,10 @@ const {
   loading,
   schoolInfo,
 } = storeToRefs(transcriptStore);
+
 const { fetchTranscript } = transcriptStore;
 
+// Fix idCard and groupStructureId to filter the
 onMounted(async () => {
   try {
     await fetchTranscript({
@@ -660,7 +657,7 @@ onMounted(async () => {
   }
 });
 
-// Calculate cumulative GPA and total credits from actual year data
+// Calculate cumulative GPA and total cr.
 const calculateCumulativeStats = computed(() => {
   const years = [
     yearOne.value,
@@ -668,11 +665,6 @@ const calculateCumulativeStats = computed(() => {
     yearThree.value,
     yearFour.value,
   ].filter((year) => year !== null);
-
-  const semesters = computed(
-    () =>
-      structureData.value?.structureRecordName || ["Semester 1", "Semester 2"]
-  );
 
   if (years.length === 0) {
     return {
@@ -712,15 +704,3 @@ const getSemesterSubjects = (subjectDetails: any[], semesterName: string) => {
   );
 };
 </script>
-
-<style scoped>
-.school-info {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.school-logo {
-  max-width: 200px;
-  height: auto;
-}
-</style>

@@ -43,7 +43,6 @@ interface SubjectDetailType {
   subjectParentType: string;
 }
 
-
 // Add interface for yearly academic data
 export interface YearlyData {
   year: number;
@@ -92,7 +91,7 @@ export const useTranscriptStore = defineStore("transcript", () => {
       const schoolResponse = await clickhouseApi.get("/", {
         params: {
           query:
-            "SELECT name, logo, address FROM clickhouse.school_staging WHERE schoolId= '6038e409-72a6-47bf-a002-4e1e1c5b2441' FORMAT JSON",
+            "SELECT name, logo, address FROM clickhouse.school WHERE schoolId= '6038e409-72a6-47bf-a002-4e1e1c5b2441' FORMAT JSON",
         },
       });
 
@@ -114,8 +113,15 @@ export const useTranscriptStore = defineStore("transcript", () => {
       console.log("School Info:", schoolInfo.value);
 
       if (response.data && response.data.length > 0) {
+        // Sort data by year number
+        const sortedData = response.data.sort((a: any, b: any) => {
+          const yearA = parseInt(a.structureRecordName.split(" ")[1]);
+          const yearB = parseInt(b.structureRecordName.split(" ")[1]);
+          return yearA - yearB;
+        });
+
         // Set student and structure data from first record
-        const firstRecord = response.data[0];
+        const firstRecord = sortedData[0];
         studentData.value = {
           studentId: firstRecord.studentId,
           studentFirstName: firstRecord.studentFirstName,
@@ -136,56 +142,56 @@ export const useTranscriptStore = defineStore("transcript", () => {
           structurePath: firstRecord.structurePath,
         };
 
-        // Organize academic data by year
-        yearOne.value = response.data[1]
+        // Assign data to years using sorted data
+        yearOne.value = sortedData[0]
           ? {
-              year: response.data[1].structureRecordName,
-              subjectDetails: response.data[1].subjectDetails,
-              totalCredits: response.data[1].totalCredits,
-              totalGPA: response.data[1].totalGPA,
-              subjectCount: response.data[1].subjectCount,
-              scorerId: response.data[1].scorerId,
-              markedAt: response.data[1].markedAt,
-              createdAt: response.data[1].createdAt,
+              year: sortedData[0].structureRecordName,
+              subjectDetails: sortedData[0].subjectDetails,
+              totalCredits: sortedData[0].totalCredits,
+              totalGPA: sortedData[0].totalGPA,
+              subjectCount: sortedData[0].subjectCount,
+              scorerId: sortedData[0].scorerId,
+              markedAt: sortedData[0].markedAt,
+              createdAt: sortedData[0].createdAt,
             }
           : null;
 
-        yearTwo.value = response.data[0]
+        yearTwo.value = sortedData[1]
           ? {
-              year: response.data[0].structureRecordName,
-              subjectDetails: response.data[0].subjectDetails,
-              totalCredits: response.data[0].totalCredits,
-              totalGPA: response.data[0].totalGPA,
-              subjectCount: response.data[0].subjectCount,
-              scorerId: response.data[0].scorerId,
-              markedAt: response.data[0].markedAt,
-              createdAt: response.data[0].createdAt,
+              year: sortedData[1].structureRecordName,
+              subjectDetails: sortedData[1].subjectDetails,
+              totalCredits: sortedData[1].totalCredits,
+              totalGPA: sortedData[1].totalGPA,
+              subjectCount: sortedData[1].subjectCount,
+              scorerId: sortedData[1].scorerId,
+              markedAt: sortedData[1].markedAt,
+              createdAt: sortedData[1].createdAt,
             }
           : null;
 
-        yearThree.value = response.data[2]
+        yearThree.value = sortedData[2]
           ? {
-              year: response.data[2].structureRecordName,
-              subjectDetails: response.data[2].subjectDetails,
-              totalCredits: response.data[2].totalCredits,
-              totalGPA: response.data[2].totalGPA,
-              subjectCount: response.data[2].subjectCount,
-              scorerId: response.data[2].scorerId,
-              markedAt: response.data[2].markedAt,
-              createdAt: response.data[2].createdAt,
+              year: sortedData[2].structureRecordName,
+              subjectDetails: sortedData[2].subjectDetails,
+              totalCredits: sortedData[2].totalCredits,
+              totalGPA: sortedData[2].totalGPA,
+              subjectCount: sortedData[2].subjectCount,
+              scorerId: sortedData[2].scorerId,
+              markedAt: sortedData[2].markedAt,
+              createdAt: sortedData[2].createdAt,
             }
           : null;
 
-        yearFour.value = response.data[3]
+        yearFour.value = sortedData[3]
           ? {
-              year: response.data[3].structureRecordName,
-              subjectDetails: response.data[3].subjectDetails,
-              totalCredits: response.data[3].totalCredits,
-              totalGPA: response.data[3].totalGPA,
-              subjectCount: response.data[3].subjectCount,
-              scorerId: response.data[3].scorerId,
-              markedAt: response.data[3].markedAt,
-              createdAt: response.data[3].createdAt,
+              year: sortedData[3].structureRecordName,
+              subjectDetails: sortedData[3].subjectDetails,
+              totalCredits: sortedData[3].totalCredits,
+              totalGPA: sortedData[3].totalGPA,
+              subjectCount: sortedData[3].subjectCount,
+              scorerId: sortedData[3].scorerId,
+              markedAt: sortedData[3].markedAt,
+              createdAt: sortedData[3].createdAt,
             }
           : null;
       } else {
