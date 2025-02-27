@@ -33,7 +33,7 @@ const selectedKeys = ref([route.name as string]);
 
     watch(
         () => route.name,
-        (newName : string) => {
+        (newName : any) => {
             if (newName) {
                 selectedKeys.value = [newName];
             }

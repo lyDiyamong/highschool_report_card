@@ -37,6 +37,13 @@
         </template>
         Transcript
       </a-menu-item>
+
+      <a-menu-item key="branchReport" @click="navigateTo('branch-report')">
+        <template #icon>
+          <FolderOutlined />
+        </template>
+        Branch Report
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
