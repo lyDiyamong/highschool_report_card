@@ -33,14 +33,14 @@
 
       <a-menu-item key="transcript" @click="navigateTo('transcript')">
         <template #icon>
-          <FolderOutlined />
+          <ContactsOutlined />
         </template>
         Transcript
       </a-menu-item>
 
       <a-menu-item key="branchReport" @click="navigateTo('branch-report')">
         <template #icon>
-          <FolderOutlined />
+          <BarChartOutlined />
         </template>
         Branch Report
       </a-menu-item>
@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { AppstoreOutlined, FolderOutlined } from "@ant-design/icons-vue";
+import { AppstoreOutlined, BarChartOutlined, ContactsOutlined, FolderOutlined } from "@ant-design/icons-vue";
 
 const props = defineProps<{
   selectedKeys: string[];
