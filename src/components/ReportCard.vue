@@ -113,20 +113,33 @@
         </table>
 
         <!-- Grading Scale -->
-        <div class="bg-red-800 text-white p-3 inline-block">
-            <p class="font-semibold">GRADING SCALE:</p>
-            <div class="text-sm">
-                <p>A = 90% - 100%</p>
-                <p>B = 80% - 89%</p>
-                <p>C = 60% - 79%</p>
-                <p>D = 0% - 59%</p>
-            </div>
-        </div>
+        <table class=" border-collapse bg-red-800 text-white p-3 ">
+            <thead>
+                <tr>
+                    <th class=" p-2  text-center">
+                        Grade
+                    </th>
+                    <th class=" p-2  text-left">
+                        Mark
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="grade in gradeScale" :key="grade.mark">
+                    <td class="border border-gray-300 p-2 text-center">
+                        {{ grade.grade }}
+                    </td>
+                    <td class="border border-gray-300 p-2">{{ grade.mark }}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
 
-        <div class="mt-8 text-right">
+        <!-- <div class="mt-8 text-right">
             <p class="font-semibold">Van Komphak</p>
             <p class="text-sm">Class Teacher</p>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -216,9 +229,16 @@
         attendance: Attendance;
     }
 
-    const currentMonth = ref(
-        new Date().toLocaleString("default", { month: "long" })
-    );
+    const gradeScale = ref([
+        { mark: "85%-100%", grade: "A"},
+        { mark: "80%-84%", grade: "B+", },
+        { mark: "70%-79%", grade: "B", },
+        { mark: "65%-69%", grade: "C+" },
+        { mark: "50%-64%", grade: "C",},
+        { mark: "45%-49%", grade: "D" },
+        { mark: "40%-44%", grade: "E" },
+        { mark: "<40%", grade: "F" },
+    ]);
 </script>
 
 <style scoped>
