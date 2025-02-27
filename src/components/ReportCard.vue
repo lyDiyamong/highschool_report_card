@@ -75,7 +75,7 @@
             <thead class="bg-red-800 text-white">
                 <tr>
                     <th class="border p-2 text-left">ATTENDANCE</th>
-                    <th class="border p-2">MARCH</th>
+                    <th class="border p-2">{{ month.toLocaleUpperCase() }}</th>
                     <th class="border p-2">TOTAL FROM PREVIOUSE MONTHS</th>
                 </tr>
             </thead>
@@ -165,7 +165,7 @@
 
     const route = useRoute();
 
-    const month = route.query.month ?? "";
+    const month = String(route.query.month ?? "");
     const studentId = route.query.studentId ?? "";
 
     const subjectByMonth = computed(() => {
