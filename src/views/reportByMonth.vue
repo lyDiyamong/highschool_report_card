@@ -10,9 +10,10 @@
 
 <script setup lang="ts">
     import { onMounted, ref, watchEffect } from "vue";
-    import { storeToRefs } from "pinia"; // ✅ Import storeToRefs
+    import { storeToRefs } from "pinia"; 
     import ReportCard from "../components/ReportCard.vue";
     import { useReportCardStore } from "../stores/report-cards/reportClickhouse";
+import { useRoute } from "vue-router";
 
     const reportCard = useReportCardStore();
     // Keep reactivity
@@ -20,10 +21,14 @@
     // This can be destructured normally (it's a function)
     const { fetchStudentReport } = reportCard;
 
+    const route = useRoute()
+
+    const studentId= String(route.query.studentId ?? "");
+
     async function fetchData() {
         try {
             await fetchStudentReport({
-                studentId: "a13f5e7a-580a-4ef0-b2be-54e2061e7e53",
+                studentId,
                 structureRecordId: "20fa080a-2f61-4f82-9cc2-326bdc50ca48",
             });
         } catch (err) {

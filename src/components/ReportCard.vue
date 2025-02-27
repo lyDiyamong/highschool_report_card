@@ -3,7 +3,7 @@
         <div class="flex justify-between items-start mb-6">
             <div>
                 <h1 class="text-3xl font-bold text-red-800">REPORT CARD</h1>
-                <p class="text-gray-600">MONTH: {{ currentMonth }}</p>
+                <p class="text-gray-600">MONTH: {{ month }}</p>
             </div>
             <div class="w-32">
                 <img
@@ -34,7 +34,12 @@
                 <span class="font-semibold">Total Student:</span>
                 {{ structureRecordData?.studentDetails.length }} students
             </p>
-            <p v-if="structureRecordData?.studentDetails && structureRecordData?.studentDetails.length > 0">
+            <p
+                v-if="
+                    structureRecordData?.studentDetails &&
+                    structureRecordData?.studentDetails.length > 0
+                "
+            >
                 <span class="font-semibold">Total Female:</span>
                 {{ countFemaleStudent }} students
             </p>
@@ -60,7 +65,7 @@
                         {{ subject.score }}/{{ subject.maxScore }}
                     </td>
                     <td class="border p-2 text-center">{{ subject.grade }}</td>
-                    <td class="border p-2 text-center" >{{ subject.rank }}</td>
+                    <td class="border p-2 text-center">{{ subject.rank }}</td>
                 </tr>
             </tbody>
         </table>
@@ -134,7 +139,7 @@
 
     const reportCardStore = useReportCardStore();
 
-    const {fetchStructureRecord} = reportCardStore
+    const { fetchStructureRecord } = reportCardStore;
 
     const { structureRecordData, loadingState } = storeToRefs(reportCardStore);
 
@@ -147,26 +152,32 @@
 
     const route = useRoute();
 
-    const monthName = route.params.month as string;
+    const month = route.query.month ?? "";
+    const studentId = route.query.studentId ?? "";
 
-    // Ensure studentReportData is defined before filtering
     const subjectByMonth = computed(() => {
-        if (
-            !studentReportData.value ||
-            !studentReportData.value.subjectDetails
-        ) {
-            return []; // Return empty array if data isn't available yet
+        if (!studentReportData.value?.subjectDetails) {
+            return []; // Return empty array if data isn't available
         }
-        return studentReportData.value.subjectDetails.filter(
-            (subject) => subject.monthName === monthName
+
+        const studentExists = structureRecordData.value?.studentDetails?.some(
+            (student) => student.studentId === studentId
         );
+
+        return studentExists
+            ? studentReportData.value.subjectDetails.filter(
+                  (subject) => subject.monthName === month
+              )
+            : [];
     });
 
     const countFemaleStudent = computed(() => {
-    return structureRecordData.value?.studentDetails
-        ? structureRecordData.value.studentDetails.filter(student => student.gender === 'female').length
-        : 0;
-});
+        return structureRecordData.value?.studentDetails
+            ? structureRecordData.value.studentDetails.filter(
+                  (student) => student.gender === "female"
+              ).length
+            : 0;
+    });
 
     onMounted(() => {
         fetchStructureRecord("20fa080a-2f61-4f82-9cc2-326bdc50ca48");

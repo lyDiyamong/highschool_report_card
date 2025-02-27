@@ -25,7 +25,7 @@
                 <a-select
                     v-model:value="record.selectedMonth"
                     class="w-full"
-                    @change="handleNavigateMonth(record.selectedMonth)"
+                    @change="handleNavigateMonth(record.selectedMonth, record.studentId)"
                 >
                     <a-select-option
                         v-for="month in uniqueMonths"
@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
     import { SmileOutlined } from "@ant-design/icons-vue";
-    import { computed, onMounted, toRefs } from "vue";
+    import { computed, toRefs } from "vue";
     import { useRouter } from "vue-router";
 import type { StructureDataType } from "@/types/studentReport.type";
 
@@ -67,6 +67,7 @@ import type { StructureDataType } from "@/types/studentReport.type";
                 fullName: `${record.studentFirstName} ${record.studentLastName}`,
                 idCard: record.idCard,
                 selectedMonth: null,
+                studentId : record.studentId
             }));
     });
 
@@ -83,8 +84,8 @@ import type { StructureDataType } from "@/types/studentReport.type";
     });
     const router = useRouter();
 
-    const handleNavigateMonth = (monthName: string) => {
-        router.push(`/reports/${monthName}`);
+    const handleNavigateMonth = (monthName: string, studentId: string) => {
+        router.push(`/reports/card?month=${monthName}&studentId=${studentId}`);
     };
 
 </script>

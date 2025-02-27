@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import DashboardLayout from "../layouts/dashboard.vue";
 
-// Import your components/views
 
+// Import your components/views
 // Define your routes
 const routes = [
     {
