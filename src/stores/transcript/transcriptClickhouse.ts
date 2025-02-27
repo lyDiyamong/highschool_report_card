@@ -22,11 +22,32 @@ export interface StructureData {
   groupStructureId: string;
   structurePath: string;
 }
+interface SubjectDetailType {
+  code: string;
+  credit: number;
+  gpa: number;
+  grade: string;
+  maxScore: number;
+  meaning: string;
+  monthEvaluationId: string | null;
+  monthName: string;
+  percentage: number;
+  score: number;
+  semesterEvaluationId: string;
+  semesterName: string;
+  subjectEvaluationId: string;
+  subjectName: string;
+  subjectNameNative: string;
+  subjectParentEvaluationId: string;
+  subjectParentName: string;
+  subjectParentType: string;
+}
+
 
 // Add interface for yearly academic data
 export interface YearlyData {
   year: number;
-  subjectDetails: string;
+  subjectDetails: SubjectDetailType[];
   totalCredits: number;
   totalGPA: number;
   subjectCount: number;

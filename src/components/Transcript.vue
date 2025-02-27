@@ -626,7 +626,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { onMounted, computed } from "vue";
 import { storeToRefs } from "pinia";
 import GradeScale from "./GradeScale.vue";
 import {
@@ -646,16 +646,7 @@ const {
   yearFour,
   loading,
   schoolInfo,
-} = storeToRefs<{
-  studentData: StudentData | null;
-  structureData: StructureData | null;
-  yearOne: YearlyData | null;
-  yearTwo: YearlyData | null;
-  yearThree: YearlyData | null;
-  yearFour: YearlyData | null;
-  loading: boolean;
-  schoolInfo: any;
-}>(transcriptStore);
+} = storeToRefs(transcriptStore);
 const { fetchTranscript } = transcriptStore;
 
 onMounted(async () => {
