@@ -13,14 +13,16 @@ import ReportCard from "../components/ReportCard.vue";
 import { useReportCardStore } from "../stores/report-cards/reportClickhouse";
 
 const reportCard = useReportCardStore();
-const { data, loading, error } = storeToRefs(reportCard); // ✅ Keep reactivity
-const { studentReport } = reportCard; // ✅ This can be destructured normally (it's a function)
+// ✅ Keep reactivity
+const { data, loading, error } = storeToRefs(reportCard); 
+// ✅ This can be destructured normally (it's a function)
+const { studentReport } = reportCard; 
 
 async function fetchData() {
     try {
         await studentReport({
-            studentId: "378a96da-8fe2-4745-a99c-d92c3f1b54a8",
-            structureRecordId: "8a8a6590-f543-47cd-9f1c-783fc62b9d8d",
+            studentId: "0480eb62-4710-4343-851e-19718f2f3e93",
+            structureRecordId: "137c3bf7-34f4-4998-a988-2ed26a4734b2",
         });
     } catch (err) {
         console.error("Query failed:", err);
