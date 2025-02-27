@@ -121,7 +121,7 @@ export const useTranscriptStore = defineStore("transcript", () => {
         });
 
         // Set student and structure data from first record
-        const firstRecord = sortedData[0];
+        const firstRecord = sortedData[3];
         studentData.value = {
           studentId: firstRecord.studentId,
           studentFirstName: firstRecord.studentFirstName,
