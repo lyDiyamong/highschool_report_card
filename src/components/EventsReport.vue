@@ -22,7 +22,7 @@
         <thead>
           <tr>
             <th class="border p-2">No</th>
-            <th class="border p-2 bg-blue-50">Description</th>
+            <th class="border p-2 bg-blue-50">Event(s) conducted</th>
             <th class="border p-2 bg-blue-50">Count</th>
           </tr>
         </thead>

@@ -41,12 +41,21 @@ export const useDwdStore = defineStore("dwd", () => {
 
       console.log("Event Counts:", eventCounts);
 
-      eventData.value = Object.entries(eventCounts).map(
-        ([eventName, count]): EventStat => ({
-          title: eventName,
-          count: count as number,
-        })
-      );
+      // Convert to array and sort (putting 'Others' at the bottom)
+      eventData.value = Object.entries(eventCounts)
+        .map(
+          ([eventName, count]): EventStat => ({
+            title: eventName,
+            count: count as number,
+          })
+        )
+        .sort((a, b) => {
+          // If one of the items is "Others", sort it to the bottom
+          if (a.title === "Others") return 1;
+          if (b.title === "Others") return -1;
+          // Otherwise, sort alphabetically
+          return a.title.localeCompare(b.title);
+        });
 
       console.log("Final Data:", eventData.value);
     } catch (err: any) {

@@ -1,7 +1,7 @@
 <template>
   <div class="branch-report p-6">
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-2xl font-bold mb-6">Branch Report</h1>
+      <h1 class="text-2xl font-bold mb-6">DWD Branch Report</h1>
 
       <!-- Tabs -->
       <a-tabs v-model:activeKey="activeTab">
