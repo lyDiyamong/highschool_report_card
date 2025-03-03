@@ -1,62 +1,132 @@
 <template>
   <div class="participants-report">
-    <div class="grid grid-cols-4 gap-4">
-      <!-- Gender Summary with Chart -->
-      <div class="col-span-4 bg-white p-6 rounded-lg shadow mb-6">
-        <h3 class="text-xl font-semibold mb-4">Gender Distribution</h3>
-        <div class="grid grid-cols-2 gap-6">
-          <!-- Chart -->
-          <div class="col-span-1">
-            <GenderPieChart :male="1245" :female="1532" :other="89" />
-          </div>
-          <!-- Stats -->
-          <div class="col-span-1 grid grid-cols-2 gap-4">
-            <div class="bg-blue-100 p-4 rounded-lg">
-              <h3 class="font-semibold text-blue-800">Male</h3>
-              <p class="text-2xl font-bold text-blue-900">1,245</p>
-            </div>
-            <div class="bg-pink-100 p-4 rounded-lg">
-              <h3 class="font-semibold text-pink-800">Female</h3>
-              <p class="text-2xl font-bold text-pink-900">1,532</p>
-            </div>
-            <div class="bg-purple-100 p-4 rounded-lg">
-              <h3 class="font-semibold text-purple-800">Cannot Disaggregate</h3>
-              <p class="text-2xl font-bold text-purple-900">89</p>
-            </div>
-            <div class="bg-gray-100 p-4 rounded-lg">
-              <h3 class="font-semibold text-gray-800">Total</h3>
-              <p class="text-2xl font-bold text-gray-900">2,866</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Table Section -->
+    <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
+      <div class="text-lg font-semibold mb-4">Filtered by:</div>
+      <table class="w-full border-collapse my-4">
+        <tr>
+          <td class="border p-2 w-1/4 bg-blue-50">Reporting Period</td>
+        </tr>
+        <tr>
+          <td class="border p-2 bg-blue-50">CC Location (branch)</td>
+          <td class="border p-2">........................</td>
+        </tr>
+      </table>
 
-      <!-- Detailed Reports -->
-      <div
-        v-for="(stat, index) in statistics"
-        :key="index"
-        class="bg-white p-4 rounded-lg shadow"
-      >
-        <h3 class="font-semibold text-gray-700">{{ stat.title }}</h3>
-        <p class="text-2xl font-bold text-gray-900">{{ stat.count }}</p>
-      </div>
+      <table class="w-full border-collapse mt-6">
+        <thead>
+          <tr>
+            <th class="border p-2" rowspan="2">No</th>
+            <th class="border p-2 bg-blue-50" rowspan="2">Description</th>
+            <th class="border p-2" colspan="4">Student</th>
+            <th class="border p-2" colspan="4">Professional Worker</th>
+          </tr>
+          <tr>
+            <th class="border p-2">Male</th>
+            <th class="border p-2">Female</th>
+            <th class="border p-2">Gender Cannot Disaggregate</th>
+            <th class="border p-2 bg-blue-50">Total</th>
+            <th class="border p-2">Male</th>
+            <th class="border p-2">Female</th>
+            <th class="border p-2">Gender Cannot Disaggregate</th>
+            <th class="border p-2 bg-blue-50">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(stat, index) in statistics" :key="index">
+            <td class="border p-2 text-center">{{ index + 1 }}</td>
+            <td class="border p-2 bg-blue-50">{{ stat.title }}</td>
+            <td class="border p-2 text-center">
+              {{ stat.student?.male || 0 }}
+            </td>
+            <td class="border p-2 text-center">
+              {{ stat.student?.female || 0 }}
+            </td>
+            <td class="border p-2 text-center">
+              {{ stat.student?.other || 0 }}
+            </td>
+            <td class="border p-2 text-center bg-blue-50">
+              {{ stat.student?.total || 0 }}
+            </td>
+            <td class="border p-2 text-center">
+              {{ stat.professional?.male || 0 }}
+            </td>
+            <td class="border p-2 text-center">
+              {{ stat.professional?.female || 0 }}
+            </td>
+            <td class="border p-2 text-center">
+              {{ stat.professional?.other || 0 }}
+            </td>
+            <td class="border p-2 text-center bg-blue-50">
+              {{ stat.professional?.total || 0 }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import GenderPieChart from "./GenderPieChart.vue";
+interface GenderStats {
+  male: number;
+  female: number;
+  other: number;
+  total: number;
+}
 
-const statistics = [
-  { title: "CC visitor", count: 3240 },
-  { title: "Participant(s) attended in all event(s)", count: 2866 },
-  { title: "Participant(s) attended in soft skill event(s)", count: 856 },
-  { title: "Participant(s) attended in hard skill event(s)", count: 945 },
-  { title: "Participant(s) attended in mentoring session(s)", count: 234 },
-  { title: "Participant(s) attended in networking event(s)", count: 567 },
-  { title: "Participant(s) attended in social event(s)", count: 789 },
-  { title: "Participant(s) attended in other event(s)", count: 123 },
-  { title: "Student(s) applied for job", count: 456 },
-  { title: "Student(s) got employed", count: 234 },
+interface StatisticItem {
+  title: string;
+  student: GenderStats;
+  professional: GenderStats;
+}
+
+const statistics: StatisticItem[] = [
+  {
+    title: "Participant(s) attended in all event(s)",
+    student: { male: 450, female: 550, other: 25, total: 1025 },
+    professional: { male: 250, female: 350, other: 15, total: 615 },
+  },
+  {
+    title: "Participant(s) attended in soft skill event(s)",
+    student: { male: 200, female: 250, other: 10, total: 460 },
+    professional: { male: 100, female: 150, other: 5, total: 255 },
+  },
+
+  {
+    title: "Participant(s) attended in hard skill event(s)",
+    student: { male: 450, female: 550, other: 25, total: 1025 },
+    professional: { male: 250, female: 350, other: 15, total: 615 },
+  },
+  {
+    title: "Participant(s) attended in mentoring session(s)",
+    student: { male: 200, female: 250, other: 10, total: 460 },
+    professional: { male: 100, female: 150, other: 5, total: 255 },
+  },
+  {
+    title: "Participant(s) attended in networking event(s)",
+    student: { male: 450, female: 550, other: 25, total: 1025 },
+    professional: { male: 250, female: 350, other: 15, total: 615 },
+  },
+  {
+    title: "Participant(s) attended in social event(s)",
+    student: { male: 200, female: 250, other: 10, total: 460 },
+    professional: { male: 100, female: 150, other: 5, total: 255 },
+  },
+  {
+    title: "Participant(s) attended in other event(s)",
+    student: { male: 450, female: 550, other: 25, total: 1025 },
+    professional: { male: 250, female: 350, other: 15, total: 615 },
+  },
+  {
+    title: "Student(s) applied for job",
+    student: { male: 200, female: 250, other: 10, total: 460 },
+    professional: { male: 100, female: 150, other: 5, total: 255 },
+  },
+  {
+    title: "Student(s) got employed",
+    student: { male: 450, female: 550, other: 25, total: 1025 },
+    professional: { male: 250, female: 350, other: 15, total: 615 },
+  },
 ];
 </script>

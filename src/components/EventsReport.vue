@@ -1,35 +1,51 @@
 <template>
   <div class="events-report">
-    <!-- Chart Section -->
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-      <h3 class="text-xl font-semibold mb-4">Events Distribution</h3>
-      <EventsBarChart :data="eventStats" />
-    </div>
+    <!-- Filter Section -->
+    <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
+      <div class="text-lg font-semibold mb-4">Filtered by:</div>
+      <table class="w-full border-collapse my-4">
+        <tr>
+          <td class="border p-2 w-1/4 bg-blue-50">Reporting Period</td>
+        </tr>
+        <tr>
+          <td class="border p-2 bg-blue-50">CC Location (branch)</td>
+        </tr>
+      </table>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-3 gap-6">
-      <div
-        v-for="(stat, index) in eventStats"
-        :key="index"
-        class="bg-white p-6 rounded-lg shadow"
-      >
-        <h3 class="text-lg font-semibold text-gray-700">{{ stat.title }}</h3>
-        <p class="text-3xl font-bold text-blue-600 mt-2">{{ stat.count }}</p>
-      </div>
+      <!-- Events Table -->
+      <table class="w-full border-collapse mt-6">
+        <thead>
+          <tr>
+            <th class="border p-2">No</th>
+            <th class="border p-2 bg-blue-50">Description</th>
+            <th class="border p-2 bg-blue-50">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(stat, index) in eventStats" :key="index">
+            <td class="border p-2 text-center">{{ index + 1 }}</td>
+            <td class="border p-2 bg-blue-50">{{ stat.title }}</td>
+            <td class="border p-2 text-center bg-blue-50">{{ stat.count }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import EventsBarChart from "./EventsBarChart.vue";
+interface EventStat {
+  title: string;
+  count: number;
+}
 
-const eventStats = [
-  { title: "Soft Skill Event(s)", count: 45 },
-  { title: "Hard Skill Event(s)", count: 38 },
-  { title: "Social Event(s)", count: 25 },
-  { title: "Networking Event(s)", count: 32 },
-  { title: "Mentoring Event(s)", count: 18 },
-  { title: "Other Event(s)", count: 12 },
-  { title: "Job Vacancy Posted", count: 156 },
+const eventStats: EventStat[] = [
+  { title: "Soft skill event(s)", count: 45 },
+  { title: "Hard skill event(s)", count: 38 },
+  { title: "Social event(s)", count: 25 },
+  { title: "Networking event(s)", count: 32 },
+  { title: "Mentoring event(s)", count: 18 },
+  { title: "Other event(s)", count: 12 },
+  { title: "Job vacancy posted", count: 156 },
 ];
 </script>
