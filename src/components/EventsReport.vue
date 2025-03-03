@@ -2,11 +2,8 @@
   <div class="events-report">
     <!-- Filter Section -->
     <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
-      <div class="text-lg font-semibold mb-4">Filtered by:</div>
+      <div class="text-lg font-semibold mb-4">Reporting Period</div>
       <table class="w-full border-collapse my-4">
-        <tr>
-          <td class="border p-2 w-1/4 bg-blue-50">Reporting Period</td>
-        </tr>
         <tr>
           <td class="border p-2 bg-blue-50">CC Location (branch)</td>
         </tr>
