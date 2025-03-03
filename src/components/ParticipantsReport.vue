@@ -9,7 +9,6 @@
         </tr>
         <tr>
           <td class="border p-2 bg-blue-50">CC Location (branch)</td>
-          <td class="border p-2">........................</td>
         </tr>
       </table>
 
