@@ -1,7 +1,15 @@
 <template>
   <div class="events-report">
-    <!-- Filter Section -->
-    <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
+    <!-- Loading State -->
+    <div v-if="loading" class="text-center py-4">Loading...</div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="text-red-600 text-center py-4">
+      {{ error }}
+    </div>
+
+    <!-- Data Display -->
+    <div v-else class="bg-white p-6 rounded-lg shadow overflow-x-auto">
       <div class="text-lg font-semibold mb-4">Reporting Period</div>
       <table class="w-full border-collapse my-4">
         <tr>
@@ -19,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(stat, index) in eventStats" :key="index">
+          <tr v-for="(stat, index) in eventData" :key="index">
             <td class="border p-2 text-center">{{ index + 1 }}</td>
             <td class="border p-2 bg-blue-50">{{ stat.title }}</td>
             <td class="border p-2 text-center bg-blue-50">{{ stat.count }}</td>
@@ -31,18 +39,14 @@
 </template>
 
 <script setup lang="ts">
-interface EventStat {
-  title: string;
-  count: number;
-}
+import { onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useDwdStore } from "../stores/report-cards/dwdClickhouse";
 
-const eventStats: EventStat[] = [
-  { title: "Soft skill event(s)", count: 45 },
-  { title: "Hard skill event(s)", count: 38 },
-  { title: "Social event(s)", count: 25 },
-  { title: "Networking event(s)", count: 32 },
-  { title: "Mentoring event(s)", count: 18 },
-  { title: "Other event(s)", count: 12 },
-  { title: "Job vacancy posted", count: 156 },
-];
+const store = useDwdStore();
+const { eventData, loading, error } = storeToRefs(store);
+
+onMounted(async () => {
+  await store.fetchEventData();
+});
 </script>
