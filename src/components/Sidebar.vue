@@ -44,6 +44,13 @@
         </template>
         DWD Report
       </a-menu-item>
+
+      <a-menu-item key="smsReport" @click="navigateTo('sms-report')">
+        <template #icon>
+          <FileTextOutlined />
+        </template>
+        SMS Report
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -55,6 +62,7 @@ import {
   AppstoreOutlined,
   BarChartOutlined,
   ContactsOutlined,
+  FileTextOutlined,
   FolderOutlined,
 } from "@ant-design/icons-vue";
 

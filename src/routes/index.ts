@@ -39,6 +39,11 @@ const routes = [
         name: "branch-report",
         component: BranchReport,
       },
+      {
+        path: "sms-report",
+        name: "sms-report",
+        component: () => import("../views/smsReport.vue"),
+      },
     ],
   },
 ];
