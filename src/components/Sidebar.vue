@@ -42,7 +42,7 @@
         <template #icon>
           <BarChartOutlined />
         </template>
-        Branch Report
+        DWD Report
       </a-menu-item>
     </a-menu>
   </a-layout-sider>
@@ -51,7 +51,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { AppstoreOutlined, BarChartOutlined, ContactsOutlined, FolderOutlined } from "@ant-design/icons-vue";
+import {
+  AppstoreOutlined,
+  BarChartOutlined,
+  ContactsOutlined,
+  FolderOutlined,
+} from "@ant-design/icons-vue";
 
 const props = defineProps<{
   selectedKeys: string[];
