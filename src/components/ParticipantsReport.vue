@@ -1,5 +1,5 @@
 <template>
-    <div class="participants-report">
+    <div>
         <!-- Table Section -->
         <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
             <div class="text-lg font-semibold mb-4">Reporting Period</div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="events-report">
+    <div>
         <!-- Loading State -->
         <div v-if="loading" class="text-center py-4">Loading...</div>
 
