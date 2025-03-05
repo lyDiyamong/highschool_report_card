@@ -1,18 +1,100 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import clickhouseApi from "../../api/clickhouseAxios";
 
-interface EventStat {
-  title: string;
-  count: number;
+interface GenderDetails {
+  male: string;
+  female: string;
+  other: string;
+  total: string;
 }
 
-const DWD_REPORT_TABLE = "clickhouse.dwd_report";
+interface CampusEventCount {
+  campusName: string;
+  campusId: string;
+  eventCount: string;
+}
+
+interface EventData {
+  schoolId: string;
+  schoolName: string;
+  eventName: string;
+  studentDetails: GenderDetails;
+  professionalDetails: GenderDetails;
+  otherDetails: GenderDetails;
+  eventCountDetails: CampusEventCount[];
+  updatedAt: string;
+}
+
+const DWD_REPORT_TABLE = "clickhouse.dwd_report_v4";
 
 export const useDwdStore = defineStore("dwd", () => {
+  const eventData = ref<EventData[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const eventData = ref<EventStat[]>([]);
+
+  // Get total events by event name
+  const getEventsByName = computed(() => {
+    return eventData.value
+      .map((event) => ({
+        title: event.eventName,
+        count: event.eventCountDetails.reduce(
+          (sum, detail) => sum + parseInt(detail.eventCount),
+          0
+        ),
+      }))
+      .sort((a, b) => {
+        // Put "Others" at the bottom
+        if (a.title === "Others") return 1;
+        if (b.title === "Others") return -1;
+        // Sort other items alphabetically
+        return a.title.localeCompare(b.title);
+      });
+  });
+
+  // Get all campuses with their events
+  const getCampusEvents = computed(() => {
+    const campusMap = new Map<
+      string,
+      { name: string; events: { title: string; count: number }[] }
+    >();
+
+    // First, initialize all campuses with empty events arrays
+    eventData.value.forEach((event) => {
+      event.eventCountDetails.forEach((campus) => {
+        if (!campusMap.has(campus.campusId)) {
+          campusMap.set(campus.campusId, {
+            name: campus.campusName,
+            events: [],
+          });
+        }
+      });
+    });
+
+    // Then, add all events for each campus, including zeros
+    eventData.value.forEach((event) => {
+      event.eventCountDetails.forEach((campus) => {
+        const campusData = campusMap.get(campus.campusId)!;
+        campusData.events.push({
+          title: event.eventName,
+          count: parseInt(campus.eventCount),
+        });
+      });
+    });
+
+    // Sort events for each campus, putting "Others" at the bottom
+    campusMap.forEach((campus) => {
+      campus.events.sort((a, b) => {
+        if (a.title === "Others") return 1;
+        if (b.title === "Others") return -1;
+        return a.title.localeCompare(b.title);
+      });
+    });
+
+    return Object.fromEntries(
+      Array.from(campusMap.entries()).map(([id, data]) => [id, data])
+    );
+  });
 
   const fetchEventData = async () => {
     loading.value = true;
@@ -25,39 +107,11 @@ export const useDwdStore = defineStore("dwd", () => {
         },
       });
 
-      console.log("Raw API Response:", response.data);
-
-      // Process the data to aggregate event counts
-      const eventCounts = response.data.reduce(
-        (acc: Record<string, number>, curr: any) => {
-          if (!acc[curr.eventName]) {
-            acc[curr.eventName] = 0;
-          }
-          acc[curr.eventName] += parseInt(curr.eventCount);
-          return acc;
-        },
-        {}
-      );
-
-      console.log("Event Counts:", eventCounts);
-
-      // Convert to array and sort (putting 'Others' at the bottom)
-      eventData.value = Object.entries(eventCounts)
-        .map(
-          ([eventName, count]): EventStat => ({
-            title: eventName,
-            count: count as number,
-          })
-        )
-        .sort((a, b) => {
-          // If one of the items is "Others", sort it to the bottom
-          if (a.title === "Others") return 1;
-          if (b.title === "Others") return -1;
-          // Otherwise, sort alphabetically
-          return a.title.localeCompare(b.title);
-        });
-
-      console.log("Final Data:", eventData.value);
+      eventData.value = response.data;
+      console.log("Event Data from Clickhouse:", {
+        totalRecords: response.data.length,
+        data: response.data,
+      });
     } catch (err: any) {
       error.value = err.message || "Failed to fetch event data";
       console.error("Error fetching event data:", err);
@@ -70,6 +124,8 @@ export const useDwdStore = defineStore("dwd", () => {
     eventData,
     loading,
     error,
+    getEventsByName,
+    getCampusEvents,
     fetchEventData,
   };
 });
